@@ -1,0 +1,36 @@
+{
+  "name": "api-qrq",
+  "version": "1.0.0",
+  "main": "./src/index.js",
+  "repository": "https://github.com/Qui-ramene-quoi/API-QRQ.git",
+  "author": "Aritat Bodgan <aritat.bodgan@gmail.com> & Johan Singainy <singainy.johan@protonmail.com>",
+  "license": "",
+  "private": true,
+  "scripts": {
+    "start": "",
+    "dev": "nodemon ./src/index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "debug": "^4.1.1",
+    "dotenv-safe": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "joi": "^17.4.1",
+    "method-override": "^3.0.0",
+    "morgan": "^1.10.0",
+    "redis": "^3.1.2",
+    "winston": "^3.1.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.31.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
+    "nodemon": "^2.0.12",
+    "prettier": "^2.3.2"
+  }
+}
