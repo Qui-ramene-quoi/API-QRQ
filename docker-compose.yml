@@ -1,7 +1,7 @@
 version: "3.7"
 services: 
     qrq-api:
-        build: .
+        image: qrq-image/base
         container_name: qrq-api-container
         ports: 
             - '3000:3000'
@@ -12,19 +12,9 @@ services:
             - ./:/app
         env_file: 
             - ./.env
-        depends_on:
-            - postgres
-    
-    db:
-        image: postgres
-        environment:
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
-            POSTGRES_HOST_AUTH_METHOD: trust
-        ports: 
-            - '5432:5432'
-        volumes:
-            - qrq-db:/var/lib/postgresql/data
-
-volumes:
-    qrq-db:
+        networks: 
+            - main_bridge
+networks :
+    main_bridge:
+        external:
+            name : main_bridge
