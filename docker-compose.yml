@@ -8,6 +8,12 @@ services:
         environment: 
             - NODE_ENV=${NODE_ENV}
             - PORT=${PORT}
+            - POSTGRES_HOST=${POSTGRES_HOST}
+            - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+            - POSTGRES_PWD=${POSTGRES_PWD}
+            - POSTGRES_DBNAME=${POSTGRES_DBNAME}
+            - POSTGRES_PORT=${POSTGRES_PORT}
+            - POSTGRES_DIALECT=${POSTGRES_DIALECT}
         volumes: 
             - ./:/app
         env_file: 

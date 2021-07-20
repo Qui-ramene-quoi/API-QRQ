@@ -3,7 +3,7 @@ const logger = require('./logger');
 
 const config = {
   host: process.env.POSTGRES_HOST,
-  user: process.POSTGRES_USERNAME,
+  user: process.env.POSTGRES_USERNAME,
   password: process.env.POSTGRES_PWD,
   database: process.env.POSTGRES_DBNAME,
   port: process.env.POSTGRES_PORT,
