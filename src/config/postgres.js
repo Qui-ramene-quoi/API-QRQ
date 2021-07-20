@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const DatabaseClass = require('./../app/core/database');
 const logger = require('./logger');
 
 const config = {
@@ -11,9 +12,12 @@ const config = {
   keepAlive: true,
 };
 
-const client = new Pool(config);
 
-client
+
+const client = new Pool(config);
+const db = new DatabaseClass(client);
+
+db
   .connect()
   .then(() => {
     logger.info(`Connected to Postgres !
@@ -27,4 +31,4 @@ client
     logger.error(error.message);
   });
 
-module.export = client;
+module.exports = db;
