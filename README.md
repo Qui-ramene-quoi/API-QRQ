@@ -46,7 +46,7 @@
 
 ## About ##
 
-Describe your project
+🍻 When a party is organized, everyone may bring the same thing, whether there is not enough or top of drinks or food. QRQ (Qui ramène quoi ?) is a mobile application that allows you to organize parties in the best conditions.
 
 ## Features ##
 
