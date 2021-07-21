@@ -50,9 +50,9 @@
 
 ## Features ##
 
-Create events
-Create events playlists
-Bring food and drinks
+Organize events\
+Organize events playlists\
+Bring foods and drinks\
 Invite friends
 
 ## Technologies ##
