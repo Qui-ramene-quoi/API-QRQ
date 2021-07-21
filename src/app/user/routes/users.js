@@ -1,8 +1,9 @@
 const express = require('express');
 
 /** Controllers */
-const Controller = require('../controllers/user')
-let userController = new Controller();
+const Controller = require('../controllers/user');
+
+const userController = new Controller();
 
 /** Resources Provider */
 
