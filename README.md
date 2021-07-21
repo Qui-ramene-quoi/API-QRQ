@@ -51,7 +51,7 @@
 ## Features ##
 
 Organize events\
-Organize events playlists\
+Organize event playlists\
 Bring foods and drinks\
 Invite friends
 
