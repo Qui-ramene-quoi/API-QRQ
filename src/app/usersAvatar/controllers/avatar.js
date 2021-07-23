@@ -38,7 +38,7 @@ userAvatarController.prototype.insertUserAvatar = async (req, res) => {
     this.query = await userAvatarsTable.insert(input);
     res.status(201).json({
       code: 201,
-      user: this.query,
+      avatar: this.query,
     });
   } catch (e) {
     res.send(e.message);
@@ -52,7 +52,7 @@ userAvatarController.prototype.updateUserAvatar = async (req, res) => {
     this.query = await userAvatarsTable.update(input, req.params.id);
     res.status(200).json({
       code: 200,
-      user: this.query,
+      avatar: this.query,
     });
   } catch (e) {
     res.send(e.message);
