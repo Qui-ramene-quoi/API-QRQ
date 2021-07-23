@@ -24,7 +24,7 @@ userController.prototype.getUser = async (req, res) => {
     this.query = await userTable.findById(req.params.id);
     res.status(200).json({
       code: 200,
-      users: this.query,
+      user: this.query,
     });
   } catch (e) {
     res.send(e.message);
