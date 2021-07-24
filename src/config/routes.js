@@ -5,10 +5,19 @@ const router = express.Router();
 /* Imports Routes */
 
 const user = require('../app/user/routes/users');
+const event = require('../app/event/routes/events');
+const usersAvatar = require('../app/usersAvatar/routes/avatars');
+const eventsAvatar = require('../app/eventsAvatar/routes/eventsAvatars');
+const place = require('../app/place/routes/places');
 
 /* Use routes */
 
 router.use('/users', user);
+router.use('/events', event);
+
+user.use('/:id/avatars', usersAvatar);
+event.use('/:id/avatars', eventsAvatar);
+event.use('/:id/places', place);
 
 /**
  * GET v1/status
