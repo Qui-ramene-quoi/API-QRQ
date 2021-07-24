@@ -9,7 +9,7 @@ const userAvatarController = new Controller();
 
 /** Validators */
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.get('/', userAvatarController.getUserAvatars);
 

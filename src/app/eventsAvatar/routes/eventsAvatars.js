@@ -9,7 +9,7 @@ const eventAvatarController = new Controller();
 
 /** Validators */
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.get('/', eventAvatarController.getEventAvatars);
 
