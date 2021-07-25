@@ -11,6 +11,7 @@ const eventsAvatar = require('../app/eventsAvatar/routes/eventsAvatars');
 const place = require('../app/place/routes/places');
 const friend = require('../app/friend/routes/friends');
 const invitation = require('../app/invitation/route/invitations');
+const beverage = require('../app/beverage/routes/beverages');
 
 /* Use routes */
 
@@ -22,6 +23,7 @@ user.use('/id/friends', friend);
 user.use('/id/invitations', invitation);
 event.use('/:id/avatars', eventsAvatar);
 event.use('/:id/places', place);
+event.use('/:id/beverages', beverage);
 
 /**
  * GET v1/status
