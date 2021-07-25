@@ -10,6 +10,7 @@ const usersAvatar = require('../app/usersAvatar/routes/avatars');
 const eventsAvatar = require('../app/eventsAvatar/routes/eventsAvatars');
 const place = require('../app/place/routes/places');
 const friend = require('../app/friend/routes/friends');
+const invitation = require('../app/invitation/route/invitations');
 
 /* Use routes */
 
@@ -18,6 +19,7 @@ router.use('/events', event);
 
 user.use('/:id/avatars', usersAvatar);
 user.use('/id/friends', friend);
+user.use('/id/invitations', invitation);
 event.use('/:id/avatars', eventsAvatar);
 event.use('/:id/places', place);
 
