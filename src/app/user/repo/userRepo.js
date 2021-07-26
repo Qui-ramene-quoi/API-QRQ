@@ -21,8 +21,8 @@ const canFindUserByEmail = (state) => ({
   findByEmail: (email) => state.query('SELECT * FROM public.users WHERE email = $1;', [email]),
 });
 
-const canInsertUser = (state) => ({
-  insert: ({ username, phoneNumber, email }) => state.query('INSERT INTO public.users (username, phone_number, email) VALUES($1, $2, $3) RETURNING *;', [username, phoneNumber, email]),
+const InsertUser = (state) => ({
+  insert: ({ phoneNumber }) => state.query('INSERT INTO public.users (phone_number) VALUES($1, $2, $3) RETURNING *;', [phoneNumber]),
 });
 
 const canUpdateUser = (state) => ({
@@ -46,7 +46,7 @@ const UserRepo = (client) => {
     ...canFindUserByUsername(userTable),
     ...canFindUserByPhone(userTable),
     ...canFindUserByEmail(userTable),
-    ...canInsertUser(userTable),
+    ...InsertUser(userTable),
     ...canUpdateUser(userTable),
     ...canDeleteUser(userTable),
     ...canPurgeUsers(userTable),
