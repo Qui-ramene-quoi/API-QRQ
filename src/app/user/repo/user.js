@@ -21,12 +21,20 @@ const canFindUserByEmail = (state) => ({
   findByEmail: (email) => state.query('SELECT * FROM public.users WHERE email = $1;', [email]),
 });
 
-const canInsertUser = (state) => ({
-  insert: ({ username, phoneNumber, email }) => state.query('INSERT INTO public.users (username, phone_number, email) VALUES($1, $2, $3) RETURNING *;', [username, phoneNumber, email]),
+const findUserByPhoneNumberAndTokenConfirm = (state) => ({
+  findByPhoneNumberAndTokenConfirm: (phoneNumber, tokenConfirm) => state.query('SELECT * FROM public.users WHERE phone_number = $1 AND token_confirm = $2;', [phoneNumber, tokenConfirm]),
+});
+
+const insertUser = (state) => ({
+  insert: ({ phoneNumber }) => state.query('INSERT INTO public.users (phone_number) VALUES($1) RETURNING *;', [phoneNumber]),
 });
 
 const canUpdateUser = (state) => ({
   update: ({ username, phoneNumber, email }, id) => state.query('UPDATE public.users SET username = $2, phone_number = $3, email = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *;', [id, username, phoneNumber, email]),
+});
+
+const confirmUser = (state) => ({
+  confirmUser: (id) => state.query('UPDATE public.users SET token_confirm = null, confirmed = true, confirmed_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *;', [id]),
 });
 
 const canDeleteUser = (state) => ({
@@ -46,8 +54,10 @@ const UserRepo = (client) => {
     ...canFindUserByUsername(userTable),
     ...canFindUserByPhone(userTable),
     ...canFindUserByEmail(userTable),
-    ...canInsertUser(userTable),
+    ...findUserByPhoneNumberAndTokenConfirm(userTable),
+    ...insertUser(userTable),
     ...canUpdateUser(userTable),
+    ...confirmUser(userTable),
     ...canDeleteUser(userTable),
     ...canPurgeUsers(userTable),
   };

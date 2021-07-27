@@ -43,12 +43,26 @@ class UserService {
     }
   }
 
+  async findByPhoneNumberAndTokenConfirm(phoneNumber, tokenConfirm) {
+    let query = null;
+    try {
+      query = await this.repo.findByPhoneNumberAndTokenConfirm(
+        phoneNumber,
+        tokenConfirm,
+      );
+      return query.rows;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
   async insert(user) {
     let query = null;
     try {
       query = await this.repo.insert(user);
       return query.rows;
     } catch (e) {
+      console.log(e);
       throw new Error(e.message);
     }
   }
@@ -57,6 +71,16 @@ class UserService {
     let query = null;
     try {
       query = await this.repo.update(user, id);
+      return query.rows;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async confirmUser(id) {
+    let query = null;
+    try {
+      query = await this.repo.confirmUser(id);
       return query.rows;
     } catch (e) {
       throw new Error(e.message);
