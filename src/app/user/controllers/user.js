@@ -2,6 +2,7 @@ const UserServiceClass = require('../service/user');
 const userRepo = require('../repo/user');
 const Response = require('../../core/response');
 const { sendSMSVerify, verifyCode } = require('../../core/twilioVerify');
+const { CreateJWT } = require('../../authentication/services/JWTService');
 
 const userTable = new UserServiceClass(userRepo);
 
@@ -121,11 +122,17 @@ userController.prototype.createUser = async (req, res, next) => {
       }
 
       this.query = await userTable.confirmUser(this.query[0].id);
-      // TODO
-      // Create JWT and save it
+
+      const accessToken = CreateJWT({
+        id: this.query[0].id,
+        username: this.query[0].username,
+        phoneNumber: this.query[0].phone_number,
+        email: this.query[0].email,
+        createdAt: new Date(),
+      });
 
       res.status(201);
-      res.locals.authentication = '9278932982987SYUISIUAIAEG';
+      res.locals.authentication = accessToken;
       [res.locals.user] = this.query;
       next();
     }
