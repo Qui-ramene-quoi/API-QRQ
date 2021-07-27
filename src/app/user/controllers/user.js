@@ -1,6 +1,7 @@
 const UserServiceClass = require('../service/user');
 const userRepo = require('../repo/user');
 const Response = require('../../core/response');
+const { sendSMSVerify, verifyCode } = require('../../core/twilioVerify');
 
 const userTable = new UserServiceClass(userRepo);
 
@@ -42,8 +43,8 @@ userController.prototype.createUser = async (req, res, next) => {
     if (this.query.length === 0) {
       try {
         this.query = await userTable.insert(requestBody);
-        // TODO
-        // Send OTP on phone number user
+
+        sendSMSVerify(requestBody.phoneNumber);
 
         res.status(428);
         res.send(
@@ -75,8 +76,18 @@ userController.prototype.createUser = async (req, res, next) => {
         )
       );
     } else {
-      // TODO
-      // Create and send new OTP
+      try {
+        sendSMSVerify(requestBody.phoneNumber);
+      } catch (err) {
+        res.status(500);
+        res.send(
+          Response(
+            res.statusCode,
+            'user.internal_server_error',
+            'An error occured, please retry later.',
+          )
+        );
+      }
 
       res.status(428);
       res.send(
@@ -96,8 +107,18 @@ userController.prototype.createUser = async (req, res, next) => {
       res.status(404);
       res.send(Response(res.statusCode, 'user.not_found', 'User not found.'));
     } else {
-      // TODO
-      // Verify OTP to validate phone number
+      try {
+        verifyCode(requestBody.phoneNumber, requestBody.otp);
+      } catch (err) {
+        res.status(500);
+        res.send(
+          Response(
+            res.statusCode,
+            'user.internal_server_error',
+            'An error occured, please retry later.',
+          )
+        );
+      }
 
       this.query = await userTable.confirmUser(this.query[0].id);
       // TODO
