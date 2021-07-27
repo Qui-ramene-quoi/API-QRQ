@@ -6,7 +6,7 @@ const firstStep = joi.object({
   phoneNumber: JoiPhoneNumber.string()
     .phoneNumber({
       defaultCountry: 'FR',
-      format: 'international',
+      format: 'e164',
       strict: true,
     })
     .required(),
@@ -16,10 +16,12 @@ const secondStep = joi.object({
   phoneNumber: JoiPhoneNumber.string()
     .phoneNumber({
       defaultCountry: 'FR',
-      format: 'national',
+      format: 'e164',
     })
     .required(),
-  tokenConfirm: joi.string().hex().required(),
+  tokenConfirm: joi.string().guid({
+    version: ['uuidv4'],
+  }),
   otp: joi.number().required(),
 });
 
