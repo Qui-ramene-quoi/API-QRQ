@@ -34,7 +34,7 @@ const canUpdateUser = (state) => ({
 });
 
 const confirmUser = (state) => ({
-  confirmUser: (id) => state.query('UPDATE public.users SET token_confirm = null, confirmed = true, confirmed_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *;', [id]),
+  confirmUser: (id) => state.query('UPDATE public.users SET token_confirm = null, confirmed = true, confirmed_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *;', [id]),
 });
 
 const canDeleteUser = (state) => ({
