@@ -8,12 +8,21 @@ const userController = new Controller();
 /** Resources Provider */
 
 /** Validators */
+const CreateUserValidator = require('../middlewares/validators/CreateUserValidator');
+
+/** Serializers */
+const UserItemSerializer = require('../middlewares/serializers/itemSerializer');
 
 const router = express.Router();
 
 router.get('/', userController.getUsers);
 
-router.post('/', userController.insertUser);
+router.post(
+  '/',
+  CreateUserValidator,
+  userController.createUser,
+  UserItemSerializer,
+);
 
 router.get('/:id', userController.getUser);
 

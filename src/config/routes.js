@@ -16,7 +16,9 @@ const eventsBeverages = require('../app/eventsBeverages/routes/eventsBeverages')
 
 /* Use routes */
 
-router.use('/users', user);
+const prefix = '/api/';
+
+router.use(`${prefix}users`, user);
 router.use('/events', event);
 
 user.use('/:id/avatars', usersAvatar);
@@ -29,6 +31,6 @@ event.use('/:id/eventsBeverages', eventsBeverages);
 /**
  * GET v1/status
  */
-router.get('/status', (req, res) => res.send('OK'));
+router.get(`${prefix}/status`, (req, res) => res.send('OK'));
 
 module.exports = router;
