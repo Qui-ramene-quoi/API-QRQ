@@ -16,9 +16,20 @@ const UserCreatedItemSerializer = async (req, res) => {
 
 const UserItemSerializer = async (req, res) => {
   res.json({
-    message: 'User profile',
+    message: 'User Profile',
     data: OutputUser(res.locals.user),
   });
 };
 
-module.exports = { UserCreatedItemSerializer, UserItemSerializer };
+const UpdateUserItemSerializer = async (req, res) => {
+  res.json({
+    message: 'User Updated',
+    data: OutputUser(res.locals.user),
+  });
+};
+
+module.exports = {
+  UserCreatedItemSerializer,
+  UserItemSerializer,
+  UpdateUserItemSerializer,
+};
