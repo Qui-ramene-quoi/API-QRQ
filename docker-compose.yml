@@ -14,13 +14,29 @@ services:
             - POSTGRES_DBNAME=${POSTGRES_DBNAME}
             - POSTGRES_PORT=${POSTGRES_PORT}
             - POSTGRES_DIALECT=${POSTGRES_DIALECT}
+            - REDIS_HOST=${REDIS_HOST}
+            - REDIS_PORT=${REDIS_PORT}
         volumes: 
             - ./:/app
         env_file: 
             - ./.env
         networks: 
             - main_bridge
+        links:
+            - qrq-redis
+    qrq-redis:
+        image: redis
+        container_name: qrq-redis-container
+        volumes:
+            - redis:/var/www/data/redis
+        command: redis-server --appendonly yes
+        networks:
+            - main_bridge
+        restart: unless-stopped
+        ports:
+            - "6379:6379"
 networks :
     main_bridge:
-        external:
-            name : main_bridge
+        name : main_bridge
+volumes:
+    redis:
