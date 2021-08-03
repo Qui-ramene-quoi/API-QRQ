@@ -40,11 +40,7 @@ const VerifyJWT = (token) => {
     algorithm: ['RS256'],
   };
 
-  try {
-    return jwt.verify(token, publicKey, verifyOptions);
-  } catch (err) {
-    return false;
-  }
+  return jwt.verify(token, publicKey, verifyOptions);
 };
 
 const DecodeJWT = (token) => jwt.decode(token, { complete: true });
