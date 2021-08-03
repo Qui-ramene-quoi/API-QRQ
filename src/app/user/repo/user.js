@@ -30,7 +30,7 @@ const insertUser = (state) => ({
 });
 
 const canUpdateUser = (state) => ({
-  update: ({ username, phoneNumber, email }, id) => state.query('UPDATE public.users SET username = $2, phone_number = $3, email = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *;', [id, username, phoneNumber, email]),
+  update: ({ username, email }, id) => state.query('UPDATE public.users SET username = $2, email = $3, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *;', [id, username, email]),
 });
 
 const confirmUser = (state) => ({

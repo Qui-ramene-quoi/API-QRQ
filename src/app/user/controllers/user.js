@@ -137,17 +137,26 @@ userController.prototype.createUser = async (req, res, next) => {
   }
 };
 
-userController.prototype.updateUser = async (req, res) => {
+userController.prototype.updateUser = async (req, res, next) => {
   this.query = null;
-  const input = req.body;
+
   try {
-    this.query = await userTable.update(input, req.params.id);
-    res.status(200).json({
-      code: 200,
-      user: this.query,
-    });
+    this.query = await userTable.update(
+      res.locals.user,
+      res.locals.userAuthenticated.id,
+    );
+
+    [res.locals.user] = this.query;
+    next();
   } catch (e) {
-    res.send(e.message);
+    res.status(500);
+    res.send(
+      Response(
+        res.statusCode,
+        'user.internal_server_error',
+        'An error occured, please retry later.',
+      )
+    );
   }
 };
 

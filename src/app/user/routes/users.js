@@ -12,11 +12,13 @@ const userController = new Controller();
 
 /** Validators */
 const CreateUserValidator = require('../middlewares/validators/CreateUserValidator');
+const UpdateUserValidator = require('../middlewares/validators/UpdateUserValidator');
 
 /** Serializers */
 const {
   UserCreatedItemSerializer,
   UserItemSerializer,
+  UpdateUserItemSerializer,
 } = require('../middlewares/serializers/itemSerializer');
 
 const router = express.Router();
@@ -35,7 +37,13 @@ router.get(
   UserItemSerializer,
 );
 
-router.put('/:id', userController.updateUser);
+router.put(
+  '/me',
+  AuthenticationProvider,
+  UpdateUserValidator,
+  userController.updateUser,
+  UpdateUserItemSerializer,
+);
 
 router.delete('/:id', userController.deleteUser);
 
