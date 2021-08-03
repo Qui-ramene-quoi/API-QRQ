@@ -7,12 +7,18 @@ const OutputUser = (user) => ({
   updatedAt: user.updated_at,
 });
 
-
-const UserItemSerializer = async (req, res) => {
+const UserCreatedItemSerializer = async (req, res) => {
   res.json({
     accessToken: res.locals.authentication,
     user: OutputUser(res.locals.user),
   });
 };
 
-module.exports = UserItemSerializer;
+const UserItemSerializer = async (req, res) => {
+  res.json({
+    message: 'User profile',
+    data: OutputUser(res.locals.user),
+  });
+};
+
+module.exports = { UserCreatedItemSerializer, UserItemSerializer };

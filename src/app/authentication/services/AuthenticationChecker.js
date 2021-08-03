@@ -6,7 +6,7 @@ const AuthenticationChecker = async (authorizationHeader) => {
   } else {
     const token = authorizationHeader.split(' ')[1];
 
-    if (token === 'undefined' || token.length === 0) {
+    if (token === undefined || token.length === 0) {
       throw new Error('authentication.unauthorized.token_required');
     }
 
