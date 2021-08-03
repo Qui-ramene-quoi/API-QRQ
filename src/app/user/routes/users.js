@@ -1,5 +1,8 @@
 const express = require('express');
 
+/** Authentication Provider */
+const AuthenticationProvider = require('../../authentication/services/AuthenticationProvider');
+
 /** Controllers */
 const Controller = require('../controllers/user');
 
@@ -11,20 +14,26 @@ const userController = new Controller();
 const CreateUserValidator = require('../middlewares/validators/CreateUserValidator');
 
 /** Serializers */
-const UserItemSerializer = require('../middlewares/serializers/itemSerializer');
+const {
+  UserCreatedItemSerializer,
+  UserItemSerializer,
+} = require('../middlewares/serializers/itemSerializer');
 
 const router = express.Router();
-
-router.get('/', userController.getUsers);
 
 router.post(
   '/',
   CreateUserValidator,
   userController.createUser,
-  UserItemSerializer,
+  UserCreatedItemSerializer,
 );
 
-router.get('/:id', userController.getUser);
+router.get(
+  '/me',
+  AuthenticationProvider,
+  userController.getUser,
+  UserItemSerializer,
+);
 
 router.put('/:id', userController.updateUser);
 

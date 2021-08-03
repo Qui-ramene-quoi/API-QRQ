@@ -8,29 +8,27 @@ const userTable = new UserServiceClass(userRepo);
 
 const userController = function () {};
 
-userController.prototype.getUsers = async (req, res) => {
+userController.prototype.getUser = async (req, res, next) => {
   this.query = null;
   try {
-    this.query = await userTable.findAll();
-    res.status(200).json({
-      code: 200,
-      users: this.query,
-    });
-  } catch (e) {
-    res.send(e.message);
-  }
-};
+    this.query = await userTable.findById(res.locals.userAuthenticated.id);
 
-userController.prototype.getUser = async (req, res) => {
-  this.query = null;
-  try {
-    this.query = await userTable.findById(req.params.id);
-    res.status(200).json({
-      code: 200,
-      user: this.query,
-    });
+    if (this.query.length === 0) {
+      res.status(404);
+      res.send(Response(res.statusCode, 'user.not_found', 'User not found.'));
+    } else {
+      [res.locals.user] = this.query;
+      next();
+    }
   } catch (e) {
-    res.send(e.message);
+    res.status(505);
+    res.send(
+      Response(
+        res.statusCode,
+        'user.internal_server_error',
+        'An error occured, please retry later.',
+      ),
+    );
   }
 };
 
