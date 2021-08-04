@@ -76,6 +76,16 @@ class UserService {
     }
   }
 
+  async updatePhoneNumber(id, phoneNumber) {
+    let query = null;
+    try {
+      query = await this.repo.updatePhoneNumber(id, phoneNumber);
+      return query.rows;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
   async confirmUser(id) {
     let query = null;
     try {

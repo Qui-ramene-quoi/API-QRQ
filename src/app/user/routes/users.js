@@ -14,10 +14,11 @@ const userController = new Controller();
 const CreateUserValidator = require('../middlewares/validators/CreateUserValidator');
 const UpdateUserValidator = require('../middlewares/validators/UpdateUserValidator');
 const UploadAvatarUserValidator = require('../middlewares/validators/UploadAvatarUserValidator');
+const UpdatePhoneNumberUserValidator = require('../middlewares/validators/UpdatePhoneNumberUserValidator');
 
 /** Serializers */
 const {
-  UserCreatedItemSerializer,
+  UserWithAccessTokenItemSerializer,
   UserItemSerializer,
   UpdateUserItemSerializer,
   UploadAvatarUserItemSerializer,
@@ -29,7 +30,7 @@ router.post(
   '/',
   CreateUserValidator,
   userController.createUser,
-  UserCreatedItemSerializer,
+  UserWithAccessTokenItemSerializer,
 );
 
 router.get(
@@ -53,6 +54,14 @@ router.post(
   UploadAvatarUserValidator,
   userController.uploadAvatar,
   UploadAvatarUserItemSerializer,
+);
+
+router.put(
+  '/me/phone-number',
+  AuthenticationProvider,
+  UpdatePhoneNumberUserValidator,
+  userController.updatePhoneNumberUser,
+  UserWithAccessTokenItemSerializer,
 );
 
 router.delete('/:id', userController.deleteUser);
