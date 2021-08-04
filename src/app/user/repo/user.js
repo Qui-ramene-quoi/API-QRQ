@@ -29,8 +29,12 @@ const insertUser = (state) => ({
   insert: ({ phoneNumber }) => state.query('INSERT INTO public.users (phone_number) VALUES($1) RETURNING *;', [phoneNumber]),
 });
 
-const canUpdateUser = (state) => ({
+const updateUser = (state) => ({
   update: ({ username, email }, id) => state.query('UPDATE public.users SET username = $2, email = $3, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *;', [id, username, email]),
+});
+
+const updatePhoneNumber = (state) => ({
+  updatePhoneNumber: (id, phoneNumber) => state.query('UPDATE public.users SET phone_number = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *;', [id, phoneNumber]),
 });
 
 const confirmUser = (state) => ({
@@ -56,7 +60,8 @@ const UserRepo = (client) => {
     ...canFindUserByEmail(userTable),
     ...findUserByPhoneNumberAndTokenConfirm(userTable),
     ...insertUser(userTable),
-    ...canUpdateUser(userTable),
+    ...updateUser(userTable),
+    ...updatePhoneNumber(userTable),
     ...confirmUser(userTable),
     ...canDeleteUser(userTable),
     ...canPurgeUsers(userTable),
