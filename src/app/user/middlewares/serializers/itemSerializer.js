@@ -21,7 +21,7 @@ const OutputPartialUser = (user) => ({
   updatedAt: user.updated_at,
 });
 
-const UserCreatedItemSerializer = async (req, res) => {
+const UserWithAccessTokenItemSerializer = async (req, res) => {
   res.json({
     accessToken: res.locals.authentication,
     user: OutputPartialUser(res.locals.user),
@@ -50,7 +50,7 @@ const UploadAvatarUserItemSerializer = async (req, res) => {
 };
 
 module.exports = {
-  UserCreatedItemSerializer,
+  UserWithAccessTokenItemSerializer,
   UserItemSerializer,
   UpdateUserItemSerializer,
   UploadAvatarUserItemSerializer,
