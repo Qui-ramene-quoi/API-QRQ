@@ -62,7 +62,6 @@ class UserService {
       query = await this.repo.insert(user);
       return query.rows;
     } catch (e) {
-      console.log(e);
       throw new Error(e.message);
     }
   }

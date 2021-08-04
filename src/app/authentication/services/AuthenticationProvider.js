@@ -23,10 +23,11 @@ const AuthenticationProvider = async (req, res, next) => {
 
   res.locals.userAuthenticated = {
     id: this.query[0].id,
-    phoneNumber: this.query[0].phone_number,
+    phone_number: this.query[0].phone_number,
     username: this.query[0].username,
     email: this.query[0].email,
-    administrator: this.query[0].role,
+    created_at: this.query[0].created_at,
+    updated_at: this.query[0].updated_at,
   };
   next();
 };
