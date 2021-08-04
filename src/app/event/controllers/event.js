@@ -1,17 +1,23 @@
 const EventServiceClass = require('../service/event');
 const EventRepo = require('../repo/event');
+const InvitationServiceClass = require('../../invitation/service/invitation');
+const InvitationRepo = require('../../invitation/repo/invitation');
+const eventSerializer = require('../middlewares/serializers/eventDetail');
+const guestSerializer = require('../middlewares/serializers/guest');
 
 const eventTable = new EventServiceClass(EventRepo);
+const invitationTable = new InvitationServiceClass(InvitationRepo);
 
 const eventController = function () {};
 
 eventController.prototype.getEvents = async (req, res) => {
   this.query = null;
   try {
-    this.query = await eventTable.findAll();
+    // User Id is needed
+    this.query = await eventTable.findAll(req.body.id);
     res.status(200).json({
       code: 200,
-      events: this.query,
+      events: this.query.map((value) => eventSerializer(value)),
     });
   } catch (e) {
     res.send(e.message);
@@ -31,14 +37,32 @@ eventController.prototype.getEvent = async (req, res) => {
   }
 };
 
+eventController.prototype.getEventGuests = async (req, res) => {
+  this.query = null;
+  try {
+    this.query = await eventTable.findAllGuests(req.params.id);
+    res.status(200).json({
+      code: 200,
+      guests: this.query.map((value) => guestSerializer(value)),
+    });
+  } catch (e) {
+    res.send(e.message);
+  }
+};
+
 eventController.prototype.insertEvent = async (req, res) => {
   this.query = null;
+  this.invitationAuthorQuery = null;
   const input = req.body;
   try {
     this.query = await eventTable.insert(input);
+    this.invitationAuthorQuery = await invitationTable.insertAuthor({
+      userId: this.query[0].user_id,
+      eventId: this.query[0].id,
+    });
     res.status(201).json({
       code: 201,
-      event: this.query,
+      eventId: this.query[0].id,
     });
   } catch (e) {
     res.send(e.message);
@@ -88,7 +112,7 @@ eventController.prototype.deleteEvent = async (req, res) => {
 eventController.prototype.purgeEvents = async (req, res) => {
   this.query = null;
   try {
-    this.query = await eventTable.purge();
+    this.query = await eventTable.purge(req.body.id);
     res.status(200).json({
       code: 200,
     });

@@ -7,11 +7,12 @@ const canFindInvitationById = (state) => ({
 });
 
 const canFindAllInvitations = (state) => ({
-  findAll: () => state.query('SELECT * FROM public.invitations;'),
+  findAll: (userId) => state.query('SELECT * FROM public.invitations INNER JOIN public.events ON invitations.event_id = events.id INNER JOIN public.places ON events.place_id = places.id INNER JOIN public.users ON events.user_id = users.id WHERE invitations.user_id = $1;', [userId]),
 });
 
 const canInsertInvitation = (state) => ({
   insert: ({ userId, eventId }) => state.query('INSERT INTO public.invitations (user_id, event_id) VALUES($1, $2) RETURNING *;', [userId, eventId]),
+  insertAuthor: ({ userId, eventId }) => state.query('INSERT INTO public.invitations (user_id, event_id, confirmed, confirmed_at, type) VALUES($1, $2, true, CURRENT_TIMESTAMP, \'author\') RETURNING *;', [userId, eventId]),
 });
 
 const canUpdateInvitation = (state) => ({
