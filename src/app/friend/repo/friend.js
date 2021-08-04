@@ -2,8 +2,9 @@
 /* eslint-disable prettier/prettier */
 const cli = require('../../../config/postgres');
 
-const canFindFriendById = (state) => ({
+const canFindFriend = (state) => ({
   findById: (id) => state.query('SELECT * FROM public.friends WHERE id = $1;', [id]),
+  findByUserId: (userId) => state.query('SELECT * FROM public.friends WHERE requester_id = $1;', [userId]),
 });
 
 const canFindAllFriends = (state) => ({
@@ -30,7 +31,7 @@ const FriendRepo = (client) => {
   const friendTable = client;
 
   return {
-    ...canFindFriendById(friendTable),
+    ...canFindFriend(friendTable),
     ...canFindAllFriends(friendTable),
     ...canInsertFriend(friendTable),
     ...canUpdateFriend(friendTable),

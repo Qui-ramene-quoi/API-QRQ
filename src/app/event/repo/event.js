@@ -7,7 +7,8 @@ const canFindEventById = (state) => ({
 });
 
 const canFindAllEvents = (state) => ({
-  findAll: () => state.query('SELECT * FROM public.events;'),
+  findAll: (userId) => state.query('SELECT DISTINCT e.id, e.title, e.description, e.date, e.submitted, e.created_at, e.updated_at, p.label FROM public.events e INNER JOIN public.invitations i ON i.user_id = $1 INNER JOIN public.places p ON e.place_id = p.id;', [userId]),
+  findAllGuests: (eventId) => state.query('SELECT * FROM public.invitations INNER JOIN public.users ON invitations.user_id = users.id WHERE invitations.event_id = $1;', [eventId]),
 });
 
 const canInsertEvent = (state) => ({
@@ -27,7 +28,7 @@ const canDeleteEvent = (state) => ({
 });
 
 const canPurgeEvents = (state) => ({
-  purge: () => state.query('DELETE FROM public.events;'),
+  purge: (userId) => state.query('DELETE FROM public.events WHERE user_id = $1;', [userId]),
 });
 
 const EventRepo = (client) => {

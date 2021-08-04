@@ -13,10 +13,20 @@ class EventService {
     }
   }
 
-  async findAll() {
+  async findAll(userId) {
     let query = null;
     try {
-      query = await this.repo.findAll();
+      query = await this.repo.findAll(userId);
+      return query.rows;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async findAllGuests(eventId) {
+    let query = null;
+    try {
+      query = await this.repo.findAllGuests(eventId);
       return query.rows;
     } catch (e) {
       throw new Error(e.message);
@@ -63,10 +73,10 @@ class EventService {
     }
   }
 
-  async purge() {
+  async purge(userId) {
     let query = null;
     try {
-      query = await this.repo.purge();
+      query = await this.repo.purge(userId);
       return query.rows;
     } catch (e) {
       throw new Error(e.message);

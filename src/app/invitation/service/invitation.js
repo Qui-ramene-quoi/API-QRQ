@@ -13,10 +13,10 @@ class InvitationService {
     }
   }
 
-  async findAll() {
+  async findAll(userId) {
     let query = null;
     try {
-      query = await this.repo.findAll();
+      query = await this.repo.findAll(userId);
       return query.rows;
     } catch (e) {
       throw new Error(e.message);
@@ -27,6 +27,16 @@ class InvitationService {
     let query = null;
     try {
       query = await this.repo.insert(invitation);
+      return query.rows;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async insertAuthor(invitation) {
+    let query = null;
+    try {
+      query = await this.repo.insertAuthor(invitation);
       return query.rows;
     } catch (e) {
       throw new Error(e.message);
