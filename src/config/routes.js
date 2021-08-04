@@ -7,7 +7,6 @@ const router = express.Router();
 const authentication = require('../app/authentication/routes/authentication');
 const user = require('../app/user/routes/users');
 const event = require('../app/event/routes/events');
-const usersAvatar = require('../app/usersAvatar/routes/avatars');
 const eventsAvatar = require('../app/eventsAvatar/routes/eventsAvatars');
 const place = require('../app/place/routes/places');
 const friend = require('../app/friend/routes/friends');
@@ -30,7 +29,6 @@ router.use(`${prefix}users`, user);
 
 router.use('/events', event);
 
-user.use('/:id/avatars', usersAvatar);
 user.use('/id/friends', friend);
 user.use('/id/invitations', invitation);
 user.use('/:id/beverages', beverage);
