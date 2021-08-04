@@ -1,26 +1,35 @@
 const UserServiceClass = require('../service/user');
+const AvatarServiceClass = require('../service/avatar');
 const userRepo = require('../repo/user');
+const avatarRepo = require('../repo/avatar');
 const Response = require('../../core/response');
 const { sendSMSVerify, verifyCode } = require('../../core/twilioVerify');
 const { CreateJWT } = require('../../authentication/services/JWTService');
 
 const userTable = new UserServiceClass(userRepo);
+const avatarTable = new AvatarServiceClass(avatarRepo);
 
 const userController = function () {};
 
 userController.prototype.getUser = async (req, res, next) => {
-  this.query = null;
+  this.queryUser = null;
+  this.queryAvatar = null;
   try {
-    this.query = await userTable.findById(res.locals.userAuthenticated.id);
+    this.queryUser = await userTable.findById(res.locals.userAuthenticated.id);
+    this.queryAvatar = await avatarTable.findByUserId(
+      res.locals.userAuthenticated.id,
+    );
 
-    if (this.query.length === 0) {
+    if (this.queryUser.length === 0) {
       res.status(404);
       res.send(Response(res.statusCode, 'user.not_found', 'User not found.'));
     } else {
-      [res.locals.user] = this.query;
+      [res.locals.user] = this.queryUser;
+      [res.locals.avatarUser] = this.queryAvatar;
       next();
     }
   } catch (e) {
+    console.log(e);
     res.status(505);
     res.send(
       Response(
@@ -157,6 +166,54 @@ userController.prototype.updateUser = async (req, res, next) => {
         'An error occured, please retry later.',
       )
     );
+  }
+};
+
+userController.prototype.uploadAvatar = async (req, res, next) => {
+  this.query = null;
+
+  this.query = await avatarTable.findByUserId(res.locals.userAuthenticated.id);
+
+  if (this.query.length === 0) {
+    try {
+      this.query = await avatarTable.insert(
+        res.locals.userAuthenticated.id,
+        res.locals.avatarUser.img,
+      );
+
+      res.status(201);
+      [res.locals.avatarUser] = this.query;
+      next();
+    } catch (e) {
+      res.status(500);
+      res.send(
+        Response(
+          res.statusCode,
+          'user.internal_server_error',
+          'An error occured, please retry later.',
+        )
+      );
+    }
+  } else {
+    try {
+      this.query = await avatarTable.update(
+        res.locals.userAuthenticated.id,
+        res.locals.avatarUser.img,
+      );
+
+      res.status(201);
+      [res.locals.avatarUser] = this.query;
+      next();
+    } catch (e) {
+      res.status(500);
+      res.send(
+        Response(
+          res.statusCode,
+          'user.internal_server_error',
+          'An error occured, please retry later.',
+        )
+      );
+    }
   }
 };
 
