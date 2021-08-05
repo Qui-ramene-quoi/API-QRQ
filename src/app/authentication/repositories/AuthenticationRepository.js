@@ -1,8 +1,6 @@
 const { getAsync, setAsync, delAsync } = require('../../core/redis-client');
 
-const GetAuthentication = async (key) => {
-  await getAsync(key);
-};
+const GetAuthentication = async (key) => await getAsync(key);
 
 const SetAuthentication = async (key, value) => {
   await setAsync(key, value);

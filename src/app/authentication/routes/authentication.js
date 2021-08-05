@@ -1,5 +1,8 @@
 const express = require('express');
 
+/** Authentication Provider */
+const AuthenticationProvider = require('../services/AuthenticationProvider');
+
 /** Controllers */
 const Controller = require('../controllers/authentication');
 
@@ -20,6 +23,12 @@ router.post(
   CreateAuthenticationValidator,
   authenticationController.createAccessToken,
   AuthenticationItemSerializer,
+);
+
+router.delete(
+  '/',
+  AuthenticationProvider,
+  authenticationController.removeAccessToken,
 );
 
 module.exports = router;
