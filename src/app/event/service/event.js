@@ -23,16 +23,6 @@ class EventService {
     }
   }
 
-  async findAllGuests(eventId) {
-    let query = null;
-    try {
-      query = await this.repo.findAllGuests(eventId);
-      return query.rows;
-    } catch (e) {
-      throw new Error(e.message);
-    }
-  }
-
   async insert(event) {
     let query = null;
     try {

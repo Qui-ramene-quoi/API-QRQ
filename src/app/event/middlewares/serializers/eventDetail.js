@@ -1,14 +1,14 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable camelcase */
+// TODO: fix confirm detail
 const EventDetailSerializer = (event) => ({
-  id: event.id,
+  id: event.event_id,
   avatar: event.filepath,
   title: event.title,
   description: event.description,
   date: event.date,
   author: event.username,
-  confirmed: event.confirmed,
-  type: event.type,
+  private: event.private,
   place: {
     label: event.label,
     streetname: event.street,

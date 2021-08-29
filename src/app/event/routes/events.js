@@ -21,7 +21,7 @@ router.put('/:id', EventController.updateEvent);
 
 router.put('/:id/publish', EventController.publishEvent);
 
-router.get('/:id/guests', EventController.getEventGuests);
+// router.get('/:id/guests', EventController.getEventGuests);
 
 router.delete('/:id', EventController.deleteEvent);
 

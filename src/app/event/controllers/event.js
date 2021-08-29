@@ -2,8 +2,8 @@ const EventServiceClass = require('../service/event');
 const EventRepo = require('../repo/event');
 const InvitationServiceClass = require('../../invitation/service/invitation');
 const InvitationRepo = require('../../invitation/repo/invitation');
-const eventSerializer = require('../middlewares/serializers/eventDetail');
-const guestSerializer = require('../middlewares/serializers/guest');
+const eventSerializer = require('../middlewares/serializers/event');
+const eventDetailSerializer = require('../middlewares/serializers/eventDetail');
 
 const eventTable = new EventServiceClass(EventRepo);
 const invitationTable = new InvitationServiceClass(InvitationRepo);
@@ -14,7 +14,7 @@ eventController.prototype.getEvents = async (req, res) => {
   this.query = null;
   try {
     // User Id is needed
-    this.query = await eventTable.findAll(req.body.id);
+    this.query = await eventTable.findAll(req.body.userId);
     res.status(200).json({
       code: 200,
       events: this.query.map((value) => eventSerializer(value)),
@@ -30,20 +30,7 @@ eventController.prototype.getEvent = async (req, res) => {
     this.query = await eventTable.findById(req.params.id);
     res.status(200).json({
       code: 200,
-      events: this.query,
-    });
-  } catch (e) {
-    res.send(e.message);
-  }
-};
-
-eventController.prototype.getEventGuests = async (req, res) => {
-  this.query = null;
-  try {
-    this.query = await eventTable.findAllGuests(req.params.id);
-    res.status(200).json({
-      code: 200,
-      guests: this.query.map((value) => guestSerializer(value)),
+      events: this.query.map((value) => eventDetailSerializer(value)),
     });
   } catch (e) {
     res.send(e.message);

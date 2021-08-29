@@ -3,12 +3,11 @@
 const cli = require('../../../config/postgres');
 
 const canFindEventById = (state) => ({
-  findById: (id) => state.query('SELECT * FROM public.events WHERE id = $1;', [id]),
+  findById: (id) => state.query('SELECT e.id as event_id, e.title, e.description, e.date, e.private, e.created_at, e.updated_at, u.username, p.label, p.street, p.postal_code, p.city, p.country FROM (SELECT * FROM events WHERE id = $1) as e INNER JOIN users u ON e.user_id = u.id INNER JOIN places p ON e.place_id = p.id;', [id]),
 });
 
 const canFindAllEvents = (state) => ({
-  findAll: (userId) => state.query('SELECT DISTINCT e.id, e.title, e.description, e.date, e.submitted, e.created_at, e.updated_at, p.label FROM public.events e INNER JOIN public.invitations i ON i.user_id = $1 INNER JOIN public.places p ON e.place_id = p.id;', [userId]),
-  findAllGuests: (eventId) => state.query('SELECT * FROM public.invitations INNER JOIN public.users ON invitations.user_id = users.id WHERE invitations.event_id = $1;', [eventId]),
+  findAll: (userId) => state.query('SELECT e.id as event_id, e.title, e.description, e.date, e.private, e.created_at, e.updated_at FROM (SELECT * FROM events) as e INNER JOIN users u ON e.user_id = u.id WHERE u.id = $1;', [userId]),
 });
 
 const canInsertEvent = (state) => ({
