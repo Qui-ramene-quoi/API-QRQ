@@ -62,7 +62,6 @@ class UserService {
       query = await this.repo.insert(user);
       return query.rows;
     } catch (e) {
-      console.log(e);
       throw new Error(e.message);
     }
   }
@@ -71,6 +70,16 @@ class UserService {
     let query = null;
     try {
       query = await this.repo.update(user, id);
+      return query.rows;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async updatePhoneNumber(id, phoneNumber) {
+    let query = null;
+    try {
+      query = await this.repo.updatePhoneNumber(id, phoneNumber);
       return query.rows;
     } catch (e) {
       throw new Error(e.message);

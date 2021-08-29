@@ -3,6 +3,9 @@ const userRepo = require('../../user/repo/user');
 const Response = require('../../core/response');
 const AuthenticationChecker = require('./AuthenticationChecker');
 const { DecodeJWT } = require('./JWTService');
+const {
+  GetAuthentication,
+} = require('../repositories/AuthenticationRepository');
 
 const userTable = new UserServiceClass(userRepo);
 
@@ -19,16 +22,34 @@ const AuthenticationProvider = async (req, res, next) => {
 
   const tokenDecoded = DecodeJWT(token);
 
-  this.query = await userTable.findById(tokenDecoded.payload.id);
+  const authenticationKey = `authentication:${tokenDecoded.payload.id}`;
 
-  res.locals.userAuthenticated = {
-    id: this.query[0].id,
-    phoneNumber: this.query[0].phone_number,
-    username: this.query[0].username,
-    email: this.query[0].email,
-    administrator: this.query[0].role,
-  };
-  next();
+  let authentication = null;
+
+  authentication = await GetAuthentication(authenticationKey);
+
+  if (authentication === undefined || authentication === null) {
+    res.status(401);
+    res.json(
+      Response(
+        res.statusCode,
+        'authentication.unauthorized',
+        'Authentication unauthorized.'
+      ),
+    );
+  } else {
+    this.query = await userTable.findById(tokenDecoded.payload.id);
+
+    res.locals.userAuthenticated = {
+      id: this.query[0].id,
+      phone_number: this.query[0].phone_number,
+      username: this.query[0].username,
+      email: this.query[0].email,
+      created_at: this.query[0].created_at,
+      updated_at: this.query[0].updated_at,
+    };
+    next();
+  }
 };
 
 module.exports = AuthenticationProvider;

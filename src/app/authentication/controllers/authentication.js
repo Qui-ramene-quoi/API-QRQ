@@ -131,4 +131,23 @@ authenticationController.prototype.createAccessToken = async (
   }
 };
 
+authenticationController.prototype.removeAccessToken = async (req, res) => {
+  const authenticationKey = `authentication:${res.locals.userAuthenticated.id}`;
+
+  try {
+    await DelAuthentication(authenticationKey);
+  } catch (err) {
+    res.status(401);
+    res.json(
+      Response(
+        res.statusCode,
+        'authentication.unauthorized',
+        'Authentication unauthorized.'
+      )
+    );
+  }
+
+  res.sendStatus(204);
+};
+
 module.exports = authenticationController;
