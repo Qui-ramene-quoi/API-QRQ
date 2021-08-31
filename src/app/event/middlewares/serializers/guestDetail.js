@@ -1,10 +1,12 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable camelcase */
 const Guestserializer = (event) => ({
-  id: event.id,
+  invitationId: event.invitation_id,
+  eventId: event.event_id,
+  userId: event.user_id,
+  type: event.type,
   username: event.username,
   avatar: null,
-  confirmed: event.confirmed,
   confirmed_at: event.confirmed_at,
 });
 

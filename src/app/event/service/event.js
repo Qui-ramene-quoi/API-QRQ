@@ -13,6 +13,16 @@ class EventService {
     }
   }
 
+  async findAllGuests(id) {
+    let query = null;
+    try {
+      query = await this.repo.findAllGuests(id);
+      return query.rows;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
   async findAll(userId) {
     let query = null;
     try {

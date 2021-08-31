@@ -9,6 +9,7 @@ const EventDetailSerializer = (event) => ({
   date: event.date,
   author: event.username,
   private: event.private,
+  guests: event.total_guests,
   place: {
     label: event.label,
     streetname: event.street,

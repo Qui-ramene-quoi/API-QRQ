@@ -4,6 +4,7 @@ const InvitationServiceClass = require('../../invitation/service/invitation');
 const InvitationRepo = require('../../invitation/repo/invitation');
 const eventSerializer = require('../middlewares/serializers/event');
 const eventDetailSerializer = require('../middlewares/serializers/eventDetail');
+const guestDetailSerializer = require('../middlewares/serializers/guestDetail');
 
 const eventTable = new EventServiceClass(EventRepo);
 const invitationTable = new InvitationServiceClass(InvitationRepo);
@@ -26,11 +27,15 @@ eventController.prototype.getEvents = async (req, res) => {
 
 eventController.prototype.getEvent = async (req, res) => {
   this.query = null;
+  this.guestsListQuery = null;
   try {
     this.query = await eventTable.findById(req.params.id);
+    this.guestsListQuery = await eventTable.findAllGuests(req.params.id);
     res.status(200).json({
       code: 200,
       events: this.query.map((value) => eventDetailSerializer(value)),
+      // eslint-disable-next-line prettier/prettier
+      guestsList: this.guestsListQuery.map((value) => guestDetailSerializer(value)),
     });
   } catch (e) {
     res.send(e.message);

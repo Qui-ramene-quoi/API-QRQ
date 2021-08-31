@@ -3,11 +3,12 @@
 const cli = require('../../../config/postgres');
 
 const canFindEventById = (state) => ({
-  findById: (id) => state.query('SELECT e.id as event_id, e.title, e.description, e.date, e.private, e.created_at, e.updated_at, u.username, p.label, p.street, p.postal_code, p.city, p.country FROM (SELECT * FROM events WHERE id = $1) as e INNER JOIN users u ON e.user_id = u.id INNER JOIN places p ON e.place_id = p.id;', [id]),
+  findById: (id) => state.query('SELECT e.id as event_id, e.title, e.description, e.date, e.private, e.created_at, e.updated_at, u.username, p.label, p.street, p.postal_code, p.city, p.country, count(i.event_id) as total_guests FROM (SELECT * FROM events WHERE id = $1) as e INNER JOIN users u ON e.user_id = u.id INNER JOIN places p ON e.place_id = p.id INNER JOIN invitations i ON e.id = i.event_id AND i.confirmed = true GROUP BY e.id, e.title, e.description, e.date, e.private, e.created_at, e.updated_at, u.username, p.label, p.street, p.postal_code, p.city, p.country;;', [id]),
 });
 
 const canFindAllEvents = (state) => ({
   findAll: (userId) => state.query('SELECT e.id as event_id, e.title, e.description, e.date, e.private, e.created_at, e.updated_at FROM (SELECT * FROM events) as e INNER JOIN users u ON e.user_id = u.id WHERE u.id = $1;', [userId]),
+  findAllGuests: (eventId) => state.query('SELECT i.id as invitation_id, i.event_id, i.type, i.confirmed_at, u.id as user_id, u.username from (SELECT * FROM invitations i WHERE i.event_id = $1 and i.confirmed = true) as i INNER JOIN users u on i.user_id = u.id;', [eventId]),
 });
 
 const canInsertEvent = (state) => ({
