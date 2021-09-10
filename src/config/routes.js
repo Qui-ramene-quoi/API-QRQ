@@ -13,6 +13,7 @@ const friend = require('../app/friend/routes/friends');
 const invitation = require('../app/invitation/route/invitations');
 const beverage = require('../app/beverage/routes/beverages');
 const eventsBeverages = require('../app/eventsBeverages/routes/eventsBeverages');
+const notification = require('../app/notification/routes/notifications');
 
 /* Use routes */
 
@@ -26,6 +27,10 @@ router.use(`${prefix}auth`, authentication);
  * User's routes
  */
 router.use(`${prefix}users`, user);
+/**
+ * Notification's routes
+ */
+router.use(`${prefix}notifications`, notification);
 
 router.use('/events', event);
 
