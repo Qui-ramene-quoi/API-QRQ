@@ -23,20 +23,20 @@ class NotificationService {
     }
   }
 
-  async findAllReaded() {
+  async findAllReaded(userId) {
     let query = null;
     try {
-      query = await this.repo.findAllReaded();
+      query = await this.repo.findAllReaded(userId);
       return query.rows;
     } catch (e) {
       throw new Error(e.message);
     }
   }
 
-  async findAllUnreaded() {
+  async findAllUnreaded(userId) {
     let query = null;
     try {
-      query = await this.repo.findAllUnreaded();
+      query = await this.repo.findAllUnreaded(userId);
       return query.rows;
     } catch (e) {
       throw new Error(e.message);

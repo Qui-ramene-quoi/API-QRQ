@@ -11,7 +11,7 @@ const OutputNotification = (notification) => ({
 
 const NotificationItemSerializer = async (req, res) => {
   res.json({
-    message: 'Notification Details',
+    message: res.locals.responseMessage,
     data: OutputNotification(res.locals.notification),
   });
 };

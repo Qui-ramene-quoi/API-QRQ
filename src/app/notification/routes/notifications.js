@@ -23,4 +23,11 @@ router.get(
   NotificationCollectionSerializer,
 );
 
+router.put(
+  '/:id',
+  AuthenticationProvider,
+  notificationController.readUnreadNotification,
+  NotificationItemSerializer,
+);
+
 module.exports = router;
