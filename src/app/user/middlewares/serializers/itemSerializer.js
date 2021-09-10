@@ -1,13 +1,13 @@
-const OutputAvatar = (avatar) => ({
-  file: avatar.file,
+const OutputAvatar = (filename) => ({
+  filename,
 });
 
-const OutputFullUser = (user, avatar) => ({
+const OutputFullUser = (user, avatarFilename) => ({
   id: user.id,
   username: user.username,
   phoneNumber: user.phone_number,
   email: user.email,
-  avatar: OutputAvatar(avatar),
+  avatar: OutputAvatar(avatarFilename),
   createdAt: user.created_at,
   updatedAt: user.updated_at,
 });
@@ -31,7 +31,7 @@ const UserWithAccessTokenItemSerializer = async (req, res) => {
 const UserItemSerializer = async (req, res) => {
   res.json({
     message: 'User Profile',
-    data: OutputFullUser(res.locals.user, res.locals.avatarUser),
+    data: OutputFullUser(res.locals.user, res.locals.avatarFilename),
   });
 };
 
@@ -45,7 +45,7 @@ const UpdateUserItemSerializer = async (req, res) => {
 const UploadAvatarUserItemSerializer = async (req, res) => {
   res.json({
     message: 'Avatar Uploaded.',
-    data: OutputFullUser(res.locals.userAuthenticated, res.locals.avatarUser),
+    data: OutputFullUser(res.locals.userAuthenticated, res.locals.avatarFilename),
   });
 };
 

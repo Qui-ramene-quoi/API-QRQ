@@ -18,6 +18,7 @@ const userController = function () {};
 userController.prototype.getUser = async (req, res, next) => {
   this.queryUser = null;
   this.queryAvatar = null;
+
   try {
     this.queryUser = await userTable.findById(res.locals.userAuthenticated.id);
     this.queryAvatar = await avatarTable.findByUserId(
@@ -29,11 +30,15 @@ userController.prototype.getUser = async (req, res, next) => {
       res.send(Response(res.statusCode, 'user.not_found', 'User not found.'));
     } else {
       [res.locals.user] = this.queryUser;
-      [res.locals.avatarUser] = this.queryAvatar;
+      if (this.queryAvatar[0] !== undefined) {
+        res.locals.avatarFilename = this.queryAvatar[0].filename;
+      } else {
+        res.locals.avatarFilename = null;
+      }
       next();
     }
   } catch (e) {
-    res.status(505);
+    res.status(500);
     res.send(
       Response(
         res.statusCode,
@@ -141,6 +146,10 @@ userController.prototype.createUser = async (req, res, next) => {
         createdAt: new Date(),
       });
 
+      const authenticationKey = `authentication:${this.query[0].id}`;
+
+      await SetAuthentication(authenticationKey, accessToken);
+
       res.status(201);
       res.locals.authentication = accessToken;
       [res.locals.user] = this.query;
@@ -185,7 +194,7 @@ userController.prototype.uploadAvatar = async (req, res, next) => {
       );
 
       res.status(201);
-      [res.locals.avatarUser] = this.query;
+      res.locals.avatarFilename = this.query[0].filename;
       next();
     } catch (e) {
       res.status(500);
@@ -205,7 +214,7 @@ userController.prototype.uploadAvatar = async (req, res, next) => {
       );
 
       res.status(201);
-      [res.locals.avatarUser] = this.query;
+      res.locals.avatarFilename = this.query[0].filename;
       next();
     } catch (e) {
       res.status(500);
